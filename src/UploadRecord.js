@@ -19,9 +19,16 @@ class UploadRecord extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      record: false
+      record: false,
+      recordedBlob: {
+        blobURL: undefined
+      }
     }
 
+    this.startRecording = this.startRecording.bind(this);
+    this.stopRecording = this.stopRecording.bind(this);
+    this.onStop = this.onStop.bind(this);
+    this.sendToServer = this.sendToServer.bind(this);
   }
 
   startRecording = () => {
@@ -37,17 +44,28 @@ class UploadRecord extends Component {
   }
 
   onStop(recordedBlob) {
-    this.setState({audioFile: recordedBlob.blobURL})
-    console.log('recordedBlob is: ', recordedBlob);
+    this.setState({recordedBlob})
   }
   
+  sendToServer() {
+    var reader = new FileReader();
+    reader.onloadend = () => {
+      const base64data = reader.result;                
+      fetch('<url', {
+        method: 'POST',
+        body: base64data
+      });
+    }
+    reader.readAsDataURL(this.state.recordedBlob.blob); 
+  }
+
   render() {
     return (
       <div>
         <ReactMic
           record={this.state.record}
           className="sound-wave"
-          onStop={this.onStop.bind(this)}
+          onStop={this.onStop}
           strokeColor="#000000"
           backgroundColor="#FF4081"
         />
@@ -57,11 +75,13 @@ class UploadRecord extends Component {
             Upload
           </Button>
           <ReactAudioPlayer
-            src={this.state.audioFile}
+            src={this.state.recordedBlob.blobURL}
             controls
           />
           <button onClick={this.startRecording} type="button">Start</button>
-          <button onClick={this.stopRecording} type="button">Stop</button>
+          <button onClick={this.stopRecording} type="button">Stop</button>         
+          <button onClick={this.sendToServer} type="button">Send</button>
+
         </label>
       </div>
     )
