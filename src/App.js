@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import AppHeader from './AppHeader';
 import UploadRecord from './UploadRecord';
+import MyTunes from './MyTunes';
 
 
 class App extends Component {
@@ -9,7 +10,8 @@ class App extends Component {
     return (
       <div>
         <AppHeader/>
-        <UploadRecord/>
+        {/*<UploadRecord/>*/}
+        <MyTunes />
       </div>
     );
   }
