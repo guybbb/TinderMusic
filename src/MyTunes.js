@@ -3,65 +3,138 @@ import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
-
+import ReactAudioPlayer from 'react-audio-player';
+import RecordDialog from './RecordDialog'
+import {SERVER_HOST} from './config'
 
 const myTunes = [{
-  name:    'Eyal',
-  tuneUrl: 'http://tunemusic'
+  name:        'Eyal',
+  url:         'http://tunemusic',
+  description: 'this is my cool tune2',
+  cover:       'sdf'
 }, {
-  name:    'guy',
-  tuneUrl: 'http://tunemusic2'
+  name:        'Guy',
+  description: 'this is my cool tune',
+  url:         'http://tunemusic2',
+  cover:       'sdf'
 }]
 
 const styles = {
   card:  {
-    width: '100vw',
+    width:    '100vw',
     minWidth: 200,
   },
   media: {
     minHeight: 200,
-    height: '50vh',
+    height:    '50vh',
+  },
+  title: {
+    marginBottom: 16,
+    fontSize:     20,
   },
 };
 
 
+const TuneCard = (props) => (
+  <Card className={props.classes.card}>
+    <CardMedia
+      className={props.classes.media}
+      image="//lorempixel.com/200/200/"
+      title="Contemplative Reptile"
+    />`
+    <CardContent>
+      <Typography type="headline" component="h2">
+        {props.name}
+      </Typography>
+      <Typography component="p">
+        {props.description}
+      </Typography>
+      <ReactAudioPlayer src={props.url} controls/>
+    </CardContent>
+    <CardActions>
+      <Button onClick={props.record} dense color="primary">
+        Record Response
+      </Button>
+      <Button dense color="primary">
+        Upload Response
+      </Button>
+      <Button onClick={props.skip} dense color="primary">
+        Skip
+      </Button>
+    </CardActions>
+  </Card>
+)
+
+export const BaseCard = ({classes=styles, message, action}) => (
+  <div>
+    <Card className={classes.card}>
+      <CardContent>
+        <Typography type="headline" className={classes.title}>
+          {message}
+        </Typography>
+      </CardContent>
+      {action ?
+        <CardActions>
+          {action.map(action => (
+            <Button onClick={action.click} dense color="primary">
+              {action.message}
+            </Button>))}
+        </CardActions>
+        : null}
+    </Card>
+  </div>
+)
+
 class MyTunes extends Component {
   constructor(props) {
     super(props)
-    this.state = {myTunes};
+    this.state = {myTunes, index: 0, showRecord: false};
   }
+
+  nextTunes = () => {
+    console.log('nextTune', this.setState, this.state.index++)
+    this.setState({index: this.state.index++})
+  }
+
+  newRecord = () => {
+    this.setState({showRecord: true})
+  }
+
+  getFile = (audioFile) => {
+    if (audioFile) {
+      console.log('got audio', audioFile)
+    }
+    else {
+      console.log('no recording')
+    }
+
+    this.setState({showRecord: false})
+  }
+
+  getRecordDialog = () => (
+    <RecordDialog
+      onRequestClose={this.getFile}
+      open={this.state.showRecord}
+    />
+  )
 
   render() {
     const classes = this.props.classes;
-
-    return (
+    return !myTunes[this.state.index] ?
       <div>
-        <Card className={classes.card}>
-          <CardMedia
-            className={classes.media}
-            image="/static/images/cards/contemplative-reptile.jpg"
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography type="headline" component="h2">
-              Lizard
-            </Typography>
-            <Typography component="p">
-              Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-              across all continents except Antarctica
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button dense color="primary">
-              Share
-            </Button>
-            <Button dense color="primary">
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
+        {this.getRecordDialog()}
+        <BaseCard message="No more tunes... comeback later! :)" classes={classes}
+                  action={[
+                    {message: 'Record a new tune', click: this.newRecord},
+                  ]}/>
       </div>
-    )
+      :
+      <div>
+        {this.getRecordDialog()}
+        <TuneCard {...myTunes[this.state.index]} classes={classes}
+                  skip={this.nextTunes}
+                  record={this.newRecord}/>
+      </div>
   }
 }
 

@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "d3": "^3.5.17",
+    "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.8",
     "react": "^15.6.1",
     "react-audio-player": "^0.6.2",
+    "react-cl-audio-player": "^1.0.0",
     "react-dom": "^15.6.1",
     "react-mic": "^8.0.0",
+    "react-music-player": "^1.0.3",
     "react-scripts": "1.0.13"
   },
   "scripts": {

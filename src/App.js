@@ -3,6 +3,7 @@ import './App.css';
 import AppHeader from './AppHeader';
 import UploadRecord from './UploadRecord';
 import MyTunes from './MyTunes';
+import Tab from './Tab';
 
 
 class App extends Component {
@@ -10,8 +11,7 @@ class App extends Component {
     return (
       <div>
         <AppHeader/>
-        {/*<UploadRecord/>*/}
-        <MyTunes />
+        <Tab view={[<UploadRecord/>, <MyTunes/>]} />
       </div>
     );
   }

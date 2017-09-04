@@ -1,0 +1,1 @@
+export const SERVER_HOST = 'http://c79d6368.ngrok.io/api'

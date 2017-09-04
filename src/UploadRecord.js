@@ -1,91 +1,51 @@
 import React, {Component} from 'react';
-import {Button} from 'material-ui';
-import {withStyles} from 'material-ui/styles';
-import {ReactMic} from 'react-mic';
-import ReactAudioPlayer from 'react-audio-player';
-
-
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
-  input:  {
-    display: 'none',
-  },
-});
-
+import {BaseCard} from './MyTunes';
+import RecordDialog from './RecordDialog';
 
 class UploadRecord extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      record: false,
+      showRecord: false,
       recordedBlob: {
         blobURL: undefined
       }
     }
-
-    this.startRecording = this.startRecording.bind(this);
-    this.stopRecording = this.stopRecording.bind(this);
-    this.onStop = this.onStop.bind(this);
-    this.sendToServer = this.sendToServer.bind(this);
   }
 
-  startRecording = () => {
-    this.setState({
-      record: true
-    });
+  newRecord = () => {
+    this.setState({showRecord:true})
   }
 
-  stopRecording = () => {
-    this.setState({
-      record: false
-    });
-  }
+  getRecordDialog = () => (
+    <RecordDialog
+      onRequestClose={this.getFile}
+      open={this.state.showRecord}
+    />
+  )
 
-  onStop(recordedBlob) {
-    this.setState({recordedBlob})
-  }
-  
-  sendToServer() {
-    var reader = new FileReader();
-    reader.onloadend = () => {
-      const base64data = reader.result;                
-      fetch('<url', {
-        method: 'POST',
-        body: base64data
-      });
+  getFile = (audioFile) => {
+    if (audioFile) {
+      console.log('got audio', audioFile)
     }
-    reader.readAsDataURL(this.state.recordedBlob.blob); 
+    else {
+      console.log('no recording')
+    }
+
+    this.setState({showRecord: false})
   }
 
   render() {
     return (
       <div>
-        <ReactMic
-          record={this.state.record}
-          className="sound-wave"
-          onStop={this.onStop}
-          strokeColor="#000000"
-          backgroundColor="#FF4081"
-        />
-        <input accept="jpg,jpeg,JPG,JPEG" className={this.props.classes.input} id="file" multiple type="file"/>
-        <label htmlFor="file">
-          <Button raised component="span" className={this.props.classes.button}>
-            Upload
-          </Button>
-          <ReactAudioPlayer
-            src={this.state.recordedBlob.blobURL}
-            controls
-          />
-          <button onClick={this.startRecording} type="button">Start</button>
-          <button onClick={this.stopRecording} type="button">Stop</button>         
-          <button onClick={this.sendToServer} type="button">Send</button>
-
-        </label>
+        {this.getRecordDialog()}
+        <BaseCard message="Upload a tune to start the jam"
+                  action={[
+                    {message: 'Record a new tune', click: this.newRecord},
+                  ]}/>
       </div>
     )
   }
 }
 
-export default withStyles(styles)(UploadRecord)
+export default UploadRecord
