@@ -9,14 +9,19 @@ import {SERVER_HOST} from './config'
 
 const myTunes = [{
   name:        'Eyal',
-  url:         'http://tunemusic',
-  description: 'this is my cool tune2',
-  cover:       'sdf'
+  url:         'https://ccrma.stanford.edu/~jos/wav/shakuhachi.wav',
+  description: 'Me playing. any ideas what to add?',
+  cover:       '//lorempixel.com/200/200/'
+}, {
+    name:        'Amily',
+    description: 'Hi guys, who wants to work with me on my song???',
+    url:         'http://mojokid.com/Amily/Amily.wav',
+    cover:       '//lorempixel.com/200/201/'
 }, {
   name:        'Guy',
-  description: 'this is my cool tune',
-  url:         'http://tunemusic2',
-  cover:       'sdf'
+  description: 'this is my cool tune.',
+    url:         'https://ccrma.stanford.edu/~jos/wav/pno-cs.wav',
+    cover:       '//lorempixel.com/200/202/'
 }]
 
 const styles = {
@@ -39,7 +44,8 @@ const TuneCard = (props) => (
   <Card className={props.classes.card}>
     <CardMedia
       className={props.classes.media}
-      image="//lorempixel.com/200/200/"
+        //image="//lorempixel.com/200/200/"
+      image={props.cover}
       title="Contemplative Reptile"
     />`
     <CardContent>

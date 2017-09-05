@@ -39,7 +39,7 @@ class UploadRecord extends Component {
     return (
       <div>
         {this.getRecordDialog()}
-        <BaseCard message="Upload a tune to start the jam"
+        <BaseCard message="Record a tune to start the jam"
                   action={[
                     {message: 'Record a new tune', click: this.newRecord},
                   ]}/>

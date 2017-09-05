@@ -20,27 +20,34 @@ class RecordDialog extends React.Component {
     this.state = {record: false}
   }
 
-  sendResponseToServer = () => {
-    return fetch(`${SERVER_HOST}/Tunes`, {
-      method:  'post',
-      body:    `userId=1&soundFile=${this.state.audioBase}&connectionId=-1`,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    })
-  }
 
 
-  handleRequestClose = () => {
-    this.setState({record: false, recordedBlob: null});
-    this.sendResponseToServer().then(res => {
-      if (res.ok) {
-        this.props.onRequestClose(this.state.recordedBlob);
-      }
-      else {
-        this.setState({status: 'Upload Failed :('})
-      }
-    });
+  //sendResponseToServer = () => {
+  //  return fetch(`${SERVER_HOST}/Tunes`, {
+  //    method:  'post',
+  //    body:    `userId=1&soundFile=${this.state.audioBase}&connectionId=-1`,
+  //    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+  //    mode:'no-cors'
+  //  })
+  //}
 
-  };
+    handleRequestClose = () => 
+    {
+        this.props.onRequestClose();
+    }
+
+  //handleRequestClose = () => {
+  //  this.setState({record: false, recordedBlob: null});
+  //  this.sendResponseToServer().then(res => {
+  //    if (res.ok) {
+  //      this.props.onRequestClose(this.state.recordedBlob);
+  //    }
+  //    else {
+  //      this.setState({status: 'Upload Failed :('})
+  //    }
+  //  });
+
+  //};
 
   onStop = (recordedBlob) => {
     console.log('recordedBlob is: ', recordedBlob);
@@ -85,7 +92,7 @@ class RecordDialog extends React.Component {
             Stop
           </Button>
           <Button onClick={this.handleRequestClose} dense color="primary">
-            {this.state.recordedBlob ? 'Done' : 'Close'}
+            {this.state.recordedBlob ? 'Share' : 'Close'}
           </Button>
         </div>
       </Dialog>

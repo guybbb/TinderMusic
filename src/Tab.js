@@ -32,8 +32,8 @@ class BasicTabs extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Tabs value={value} onChange={this.handleChange}>
-            <Tab label="Record a tune" />
-            <Tab label="Send a response (10)" />
+            <Tab label="Record" />
+            <Tab label="Listen (3)" />
           </Tabs>
         </AppBar>
         {value === 0 && <TabContainer>{this.props.view[0]}</TabContainer>}

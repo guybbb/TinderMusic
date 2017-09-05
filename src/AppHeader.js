@@ -18,7 +18,7 @@ class AppHeader extends Component {
       <AppBar position="static">
         <Toolbar>
           <Typography type="title" color="inherit">
-            MusicTinder
+            PickATune
           </Typography>
         </Toolbar>
       </AppBar>
